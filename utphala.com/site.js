@@ -86,6 +86,83 @@ document.addEventListener('DOMContentLoaded', function () {
     reveals.forEach(function (el) { revealObserver.observe(el); });
   }
 
+  /* ---------- Auto-loading gallery ---------- */
+  var galleryGrid = document.getElementById('gallery-grid');
+  if (galleryGrid) {
+    // Any image uploaded to this folder in the GitHub repo appears here automatically.
+    var GH_OWNER = 'saaishhundekar-ux';
+    var GH_REPO = 'website_new';
+    var GH_PATH = 'utphala.com/images/gallery';
+    var GH_BRANCH = 'main';
+
+    // Starter photos shown if the GitHub API is unreachable (e.g. local preview or rate limit)
+    var fallback = [
+      'polyhouse-chilli-team.jpg', 'uat-export-harvest.jpg', 'byadagi-drying-yard.jpg',
+      'chilli-field-1.jpg', 'chilli-field-2.jpg', 'chilli-field-3.jpg', 'bhendi-field.jpg'
+    ].map(function (f) { return 'images/gallery/' + f; });
+
+    var isImg = /\.(jpe?g|png|webp|gif)$/i;
+
+    function render(urls) {
+      galleryGrid.innerHTML = '';
+      if (!urls.length) {
+        galleryGrid.innerHTML = '<p class="gallery-status">Photos coming soon — check back shortly!</p>';
+        return;
+      }
+      urls.forEach(function (u, i) {
+        var d = document.createElement('div');
+        d.className = 'g-item';
+        d.innerHTML = '<img src="' + u + '" alt="Utphala Agritech field photo" loading="lazy">';
+        d.addEventListener('click', function () { openLightbox(i); });
+        galleryGrid.appendChild(d);
+      });
+      window.__galleryUrls = urls;
+    }
+
+    fetch('https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_PATH + '?ref=' + GH_BRANCH)
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (files) {
+        var urls = files
+          .filter(function (f) { return f.type === 'file' && isImg.test(f.name); })
+          .map(function (f) { return f.download_url; });
+        render(urls.length ? urls : fallback);
+      })
+      .catch(function () { render(fallback); });
+
+    /* Lightbox */
+    var lb = document.createElement('div');
+    lb.className = 'lightbox';
+    lb.innerHTML = '<button class="lb-close" aria-label="Close">✕</button>'
+      + '<button class="lb-prev" aria-label="Previous">‹</button>'
+      + '<img src="" alt="Gallery photo enlarged">'
+      + '<button class="lb-next" aria-label="Next">›</button>';
+    document.body.appendChild(lb);
+    var lbImg = lb.querySelector('img');
+    var lbIndex = 0;
+
+    function openLightbox(i) {
+      lbIndex = i;
+      lbImg.src = window.__galleryUrls[i];
+      lb.classList.add('open');
+    }
+    function step(dir) {
+      var urls = window.__galleryUrls || [];
+      if (!urls.length) return;
+      lbIndex = (lbIndex + dir + urls.length) % urls.length;
+      lbImg.src = urls[lbIndex];
+    }
+    lb.querySelector('.lb-close').addEventListener('click', function () { lb.classList.remove('open'); });
+    lb.querySelector('.lb-prev').addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
+    lb.querySelector('.lb-next').addEventListener('click', function (e) { e.stopPropagation(); step(1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) lb.classList.remove('open'); });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') lb.classList.remove('open');
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+  }
+
   /* ---------- Contact form → WhatsApp ---------- */
   var form = document.getElementById('wa-form');
   if (form) {
