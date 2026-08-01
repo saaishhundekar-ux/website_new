@@ -797,12 +797,19 @@ section { padding: 70px 0; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
   section { padding: 50px 0; }
 
-  /* Compact feature cards so all 3 fit on one screen */
-  .features .grid { gap: 12px; }
-  .feature-card { padding: 18px 16px; }
-  .feature-card .icon { width: 46px; height: 46px; font-size: 1.3rem; margin-bottom: 10px; }
-  .feature-card h3 { font-size: 1rem; margin-bottom: 4px; }
-  .feature-card p { font-size: .85rem; }
+  /* Feature cards: 3 compact cards per row */
+  .features .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .feature-card { padding: 10px 8px; }
+  .feature-card .icon { width: 32px; height: 32px; font-size: .95rem; margin-bottom: 6px; }
+  .feature-card h3 { font-size: .72rem; margin-bottom: 4px; line-height: 1.25; }
+  .feature-card p { font-size: .62rem; line-height: 1.35; }
+
+  /* Office cards: 3 compact cards per row */
+  .office-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 24px; }
+  .office-card { padding: 10px 8px; }
+  .office-card .oc-label { font-size: .5rem; padding: 2px 6px; margin-bottom: 6px; }
+  .office-card h3 { font-size: .68rem; margin-bottom: 4px; line-height: 1.25; }
+  .office-card p { font-size: .58rem; line-height: 1.3; }
 
   /* Footer: Quick Links + Our Hybrids side by side */
   .footer .cols {
