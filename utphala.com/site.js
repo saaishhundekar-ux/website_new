@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Starter photos shown if the GitHub API is unreachable (e.g. local preview or rate limit)
     var fallback = [
-      'polyhouse-chilli-team.jpg', 'uat-export-harvest.jpg', 'byadagi-drying-yard.jpg',
-      'chilli-field-1.jpg', 'chilli-field-2.jpg', 'chilli-field-3.jpg', 'bhendi-field.jpg'
+      'field-photo-1.jpeg', 'field-photo-2.jpeg', 'field-photo-3.jpeg',
+      'field-photo-4.jpeg', 'field-photo-5.jpeg', 'field-photo-6.jpeg'
     ].map(function (f) { return 'images/gallery/' + f; });
 
     var isImg = /\.(jpe?g|png|webp|gif)$/i;
