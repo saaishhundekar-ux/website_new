@@ -795,7 +795,28 @@ section { padding: 70px 0; }
 
 @media (max-width: 560px) {
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
-  .prod-grid { grid-template-columns: 1fr; }
-  .footer .cols { grid-template-columns: 1fr; }
   section { padding: 50px 0; }
+
+  /* Compact feature cards so all 3 fit on one screen */
+  .features .grid { gap: 12px; }
+  .feature-card { padding: 18px 16px; }
+  .feature-card .icon { width: 46px; height: 46px; font-size: 1.3rem; margin-bottom: 10px; }
+  .feature-card h3 { font-size: 1rem; margin-bottom: 4px; }
+  .feature-card p { font-size: .85rem; }
+
+  /* Footer: Quick Links + Our Hybrids side by side */
+  .footer .cols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px 16px;
+  }
+  .f-brand, .f-contact { flex: 1 1 100%; }
+  .f-links, .f-hybrids { flex: 1 1 calc(50% - 8px); }
+
+  /* Product cards: 3 compact cards per row */
+  .prod-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .prod-card .thumb { height: 90px; }
+  .prod-card .body { padding: 8px 8px 10px; }
+  .prod-card h3 { font-size: .66rem; line-height: 1.25; }
+  .prod-card .tag { font-size: .58rem; padding: 1px 6px; margin: 4px 0 0; }
 }
