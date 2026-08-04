@@ -10,12 +10,26 @@ document.addEventListener('DOMContentLoaded', function () {
       nav.classList.toggle('open');
       toggle.classList.toggle('open');
     });
+    var dropdownParent = document.querySelector('.nav .has-dropdown');
+    var dropdownLink = dropdownParent && dropdownParent.querySelector(':scope > a');
     nav.querySelectorAll('a').forEach(function (a) {
+      if (a === dropdownLink) return;
       a.addEventListener('click', function () {
         nav.classList.remove('open');
         toggle.classList.remove('open');
       });
     });
+    if (dropdownLink) {
+      dropdownLink.addEventListener('click', function (e) {
+        if (window.innerWidth <= 820) {
+          e.preventDefault();
+          dropdownParent.classList.toggle('open');
+        } else {
+          nav.classList.remove('open');
+          toggle.classList.remove('open');
+        }
+      });
+    }
   }
 
   /* ---------- Hero slider ---------- */

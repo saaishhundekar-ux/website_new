@@ -137,8 +137,10 @@ section { padding: 70px 0; }
   flex-direction: column;
   gap: 0;
 }
-.nav .has-dropdown:hover .dropdown,
-.nav .has-dropdown:focus-within .dropdown { display: flex; }
+@media (min-width: 821px) {
+  .nav .has-dropdown:hover .dropdown,
+  .nav .has-dropdown:focus-within .dropdown { display: flex; }
+}
 .nav .dropdown a { padding: 9px 14px; font-size: .9rem; border-radius: 7px; font-family: 'Nunito', 'Segoe UI', sans-serif; }
 
 .btn {
@@ -771,13 +773,14 @@ section { padding: 70px 0; }
   .nav ul { flex-direction: column; align-items: stretch; gap: 2px; }
   .nav .dropdown {
     position: static;
-    display: flex;
+    display: none;
     box-shadow: none;
     border-top: none;
     border-left: 3px solid var(--yellow-500);
     border-radius: 0;
     margin: 4px 0 4px 14px;
   }
+  .nav .has-dropdown.open .dropdown { display: flex; }
   .nav-toggle { display: block; z-index: 1150; position: relative; }
   .nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
   .nav-toggle.open span:nth-child(2) { opacity: 0; }
@@ -797,19 +800,19 @@ section { padding: 70px 0; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
   section { padding: 50px 0; }
 
-  /* Feature cards: 3 compact cards per row */
-  .features .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .feature-card { padding: 10px 8px; }
-  .feature-card .icon { width: 32px; height: 32px; font-size: .95rem; margin-bottom: 6px; }
-  .feature-card h3 { font-size: .72rem; margin-bottom: 4px; line-height: 1.25; }
-  .feature-card p { font-size: .62rem; line-height: 1.35; }
+  /* Feature cards: 2 per row, 3rd centered on its own line */
+  .features .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .feature-card { flex: 0 0 calc(50% - 5px); padding: 14px 12px; }
+  .feature-card .icon { width: 40px; height: 40px; font-size: 1.1rem; margin-bottom: 8px; }
+  .feature-card h3 { font-size: .85rem; margin-bottom: 4px; line-height: 1.3; }
+  .feature-card p { font-size: .72rem; line-height: 1.4; }
 
-  /* Office cards: 3 compact cards per row */
-  .office-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 24px; }
-  .office-card { padding: 10px 8px; }
-  .office-card .oc-label { font-size: .5rem; padding: 2px 6px; margin-bottom: 6px; }
-  .office-card h3 { font-size: .68rem; margin-bottom: 4px; line-height: 1.25; }
-  .office-card p { font-size: .58rem; line-height: 1.3; }
+  /* Office cards: 2 per row, 3rd centered on its own line */
+  .office-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 24px; }
+  .office-card { flex: 0 0 calc(50% - 5px); padding: 14px 12px; }
+  .office-card .oc-label { font-size: .62rem; padding: 3px 8px; margin-bottom: 8px; }
+  .office-card h3 { font-size: .85rem; margin-bottom: 4px; line-height: 1.3; }
+  .office-card p { font-size: .72rem; line-height: 1.35; }
 
   /* Footer: Quick Links + Our Hybrids side by side */
   .footer .cols {
@@ -820,10 +823,10 @@ section { padding: 70px 0; }
   .f-brand, .f-contact { flex: 1 1 100%; }
   .f-links, .f-hybrids { flex: 1 1 calc(50% - 8px); }
 
-  /* Product cards: 3 compact cards per row */
-  .prod-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .prod-card .thumb { height: 90px; }
-  .prod-card .body { padding: 8px 8px 10px; }
-  .prod-card h3 { font-size: .66rem; line-height: 1.25; }
-  .prod-card .tag { font-size: .58rem; padding: 1px 6px; margin: 4px 0 0; }
+  /* Product cards: 2 per row */
+  .prod-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .prod-card .thumb { height: 130px; }
+  .prod-card .body { padding: 10px 12px 12px; }
+  .prod-card h3 { font-size: .8rem; line-height: 1.3; }
+  .prod-card .tag { font-size: .68rem; padding: 2px 8px; margin: 6px 0 0; }
 }
