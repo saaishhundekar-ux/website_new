@@ -177,6 +177,69 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  /* ---------- Product detail modal ---------- */
+  var prodCards = document.querySelectorAll('.prod-card');
+  if (prodCards.length && typeof PRODUCT_DETAILS !== 'undefined') {
+    var pm = document.createElement('div');
+    pm.className = 'product-modal';
+    pm.innerHTML = '<div class="pm-backdrop"></div>'
+      + '<div class="pm-panel">'
+      + '<button class="pm-close" aria-label="Close">✕</button>'
+      + '<div class="pm-image"><img src="" alt=""></div>'
+      + '<div class="pm-body">'
+      + '<span class="pm-category"></span>'
+      + '<h3 class="pm-name"></h3>'
+      + '<p class="pm-desc"></p>'
+      + '<h4 class="pm-spec-title">Fruits</h4>'
+      + '<ul class="pm-specs"></ul>'
+      + '<h4>Features</h4>'
+      + '<ul class="pm-features"></ul>'
+      + '</div></div>';
+    document.body.appendChild(pm);
+
+    var pmImg = pm.querySelector('.pm-image img');
+    var pmCategory = pm.querySelector('.pm-category');
+    var pmName = pm.querySelector('.pm-name');
+    var pmDesc = pm.querySelector('.pm-desc');
+    var pmSpecTitle = pm.querySelector('.pm-spec-title');
+    var pmSpecs = pm.querySelector('.pm-specs');
+    var pmFeatures = pm.querySelector('.pm-features');
+
+    function listItems(arr) {
+      return arr.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    }
+
+    function openProductModal(key, imgSrc) {
+      var d = PRODUCT_DETAILS[key];
+      if (!d) return;
+      pmImg.src = imgSrc;
+      pmImg.alt = d.name;
+      pmCategory.textContent = d.category;
+      pmName.textContent = d.name;
+      pmDesc.textContent = d.desc;
+      pmSpecTitle.textContent = d.specTitle || 'Fruits';
+      pmSpecs.innerHTML = listItems(d.specs);
+      pmFeatures.innerHTML = listItems(d.features);
+      pm.classList.add('open');
+    }
+
+    prodCards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        var img = card.querySelector('img');
+        if (!img) return;
+        var src = img.getAttribute('src');
+        var key = src.split('/').pop().replace(/\.(jpe?g|png)$/i, '');
+        openProductModal(key, src);
+      });
+    });
+
+    pm.querySelector('.pm-close').addEventListener('click', function () { pm.classList.remove('open'); });
+    pm.querySelector('.pm-backdrop').addEventListener('click', function () { pm.classList.remove('open'); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') pm.classList.remove('open');
+    });
+  }
+
   /* ---------- Contact form → WhatsApp ---------- */
   var form = document.getElementById('wa-form');
   if (form) {
