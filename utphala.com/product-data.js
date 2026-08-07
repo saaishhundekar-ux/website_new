@@ -16,7 +16,7 @@ var PRODUCT_DETAILS = {
     features: ['Excellent acidic type hybrid with very good taste.', 'Wide adaptability hybrid.', 'Suitable for both staking & non-staking cultivation.']
   },
   'tomato-aadhya': {
-    category: 'Tomato', name: 'UAT - GURUSHREE F1',
+    category: 'Tomato', name: 'UAT - GURUSRI F1',
     desc: 'Semi-determinate with strong, healthy plant. Vigorous plant growth with early fruit setting habit and early harvesting.',
     specTitle: 'Fruits',
     specs: ['Oval shape with uniform medium size (100–120 g).', 'Excellent fruit size uniformity with good shelf life.', 'Fruit harvesting starts 65-70 days after transplanting.', 'Ripe fruits are attractive red and glossy.'],
@@ -231,7 +231,7 @@ var PRODUCT_DETAILS = {
     category: 'Radish', name: 'UAT - GANGA (Palak Patta)',
     desc: 'Medium light green palak-shaped foliage.',
     specTitle: 'Roots',
-    specs: ['Long, uniform & cylindrical.', 'Root colour — pure white.', 'Length 20-25 cm.', 'Harvesting 40-45 days after sowing.'],
+    specs: ['Long, uniform & cylindrical.', 'Root colour: pure white.', 'Length 20-25 cm.', 'Harvesting 40-45 days after sowing.'],
     features: ['Roots are smooth, tender & non-pithy.', 'Wider adaptability.', 'Soft and tasty leaves.']
   },
 

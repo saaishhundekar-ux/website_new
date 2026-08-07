@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function render(urls) {
       galleryGrid.innerHTML = '';
       if (!urls.length) {
-        galleryGrid.innerHTML = '<p class="gallery-status">Photos coming soon — check back shortly!</p>';
+        galleryGrid.innerHTML = '<p class="gallery-status">Photos coming soon, check back shortly!</p>';
         return;
       }
       urls.forEach(function (u, i) {

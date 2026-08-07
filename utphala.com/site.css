@@ -260,7 +260,7 @@ section { padding: 70px 0; }
 .hero .hero-dots button.active { background: var(--yellow-400); }
 
 /* ---------- Feature cards ---------- */
-.features { background: var(--white); padding-top: 0; margin-top: -60px; position: relative; z-index: 5; padding-bottom: 0; }
+.features { background: var(--white); padding-top: 0; margin-top: -95px; position: relative; z-index: 5; padding-bottom: 0; }
 .features .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -497,7 +497,7 @@ section { padding: 70px 0; }
 /* ---------- Office cards / contact ---------- */
 .office-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
   margin-top: 40px;
 }
