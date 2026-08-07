@@ -112,7 +112,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Starter photos shown if the GitHub API is unreachable (e.g. local preview or rate limit)
     var fallback = [
       'field-photo-1.jpeg', 'field-photo-2.jpeg', 'field-photo-3.jpeg',
-      'field-photo-4.jpeg', 'field-photo-5.jpeg', 'field-photo-6.jpeg'
+      'field-photo-4.jpeg', 'field-photo-5.jpeg', 'field-photo-6.jpeg',
+      'field-photo-7.jpeg', 'field-photo-8.jpeg', 'field-photo-9.jpeg',
+      'field-photo-10.jpeg', 'field-photo-11.jpeg', 'field-photo-12.jpeg',
+      'field-photo-13.jpeg'
     ].map(function (f) { return 'images/gallery/' + f; });
 
     var isImg = /\.(jpe?g|png|webp|gif)$/i;
@@ -185,14 +188,20 @@ document.addEventListener('DOMContentLoaded', function () {
     pm.innerHTML = '<div class="pm-backdrop"></div>'
       + '<div class="pm-panel">'
       + '<button class="pm-close" aria-label="Close">✕</button>'
-      + '<div class="pm-image"><img src="" alt=""></div>'
+      + '<div class="pm-image">'
+      + '<img src="" alt="">'
+      + '<button class="pm-nav pm-prev" aria-label="Previous photo">‹</button>'
+      + '<button class="pm-nav pm-next" aria-label="Next photo">›</button>'
+      + '<span class="pm-count"></span>'
+      + '</div>'
+      + '<div class="pm-thumbs"></div>'
       + '<div class="pm-body">'
       + '<span class="pm-category"></span>'
       + '<h3 class="pm-name"></h3>'
       + '<p class="pm-desc"></p>'
       + '<h4 class="pm-spec-title">Fruits</h4>'
       + '<ul class="pm-specs"></ul>'
-      + '<h4>Features</h4>'
+      + '<h4 class="pm-feat-title">Features</h4>'
       + '<ul class="pm-features"></ul>'
       + '</div></div>';
     document.body.appendChild(pm);
@@ -203,25 +212,71 @@ document.addEventListener('DOMContentLoaded', function () {
     var pmDesc = pm.querySelector('.pm-desc');
     var pmSpecTitle = pm.querySelector('.pm-spec-title');
     var pmSpecs = pm.querySelector('.pm-specs');
+    var pmFeatTitle = pm.querySelector('.pm-feat-title');
     var pmFeatures = pm.querySelector('.pm-features');
+    var pmThumbs = pm.querySelector('.pm-thumbs');
+    var pmCount = pm.querySelector('.pm-count');
+    var pmPrev = pm.querySelector('.pm-prev');
+    var pmNext = pm.querySelector('.pm-next');
+
+    var shots = [];
+    var shotIndex = 0;
 
     function listItems(arr) {
       return arr.map(function (s) { return '<li>' + s + '</li>'; }).join('');
     }
 
+    /* show/hide a heading + its list together, so a product with no
+       brochure entry yet (photos only) does not render empty sections */
+    function section(titleEl, listEl, items) {
+      var has = items && items.length;
+      titleEl.style.display = has ? '' : 'none';
+      listEl.style.display = has ? '' : 'none';
+      if (has) listEl.innerHTML = listItems(items);
+    }
+
+    function showShot(i) {
+      if (!shots.length) return;
+      shotIndex = (i + shots.length) % shots.length;
+      pmImg.src = shots[shotIndex];
+      pmCount.textContent = (shotIndex + 1) + ' / ' + shots.length;
+      pmThumbs.querySelectorAll('button').forEach(function (b, n) {
+        b.classList.toggle('active', n === shotIndex);
+      });
+    }
+
     function openProductModal(key, imgSrc) {
       var d = PRODUCT_DETAILS[key];
       if (!d) return;
-      pmImg.src = imgSrc;
+
+      /* the brochure shot leads, then any real field photos */
+      shots = d.photosOnly ? (d.photos || []).slice() : [imgSrc].concat(d.photos || []);
+      var many = shots.length > 1;
+      pmThumbs.innerHTML = many ? shots.map(function (u, n) {
+        return '<button type="button" aria-label="Photo ' + (n + 1) + '"><img src="' + u + '" alt="" loading="lazy"></button>';
+      }).join('') : '';
+      pmThumbs.style.display = many ? '' : 'none';
+      pmCount.style.display = many ? '' : 'none';
+      pmPrev.style.display = pmNext.style.display = many ? '' : 'none';
+      pmThumbs.querySelectorAll('button').forEach(function (b, n) {
+        b.addEventListener('click', function () { showShot(n); });
+      });
+
       pmImg.alt = d.name;
       pmCategory.textContent = d.category;
       pmName.textContent = d.name;
-      pmDesc.textContent = d.desc;
+      pmDesc.textContent = d.desc || '';
+      pmDesc.style.display = d.desc ? '' : 'none';
       pmSpecTitle.textContent = d.specTitle || 'Fruits';
-      pmSpecs.innerHTML = listItems(d.specs);
-      pmFeatures.innerHTML = listItems(d.features);
+      section(pmSpecTitle, pmSpecs, d.specs);
+      section(pmFeatTitle, pmFeatures, d.features);
+
+      showShot(0);
       pm.classList.add('open');
     }
+
+    pmPrev.addEventListener('click', function () { showShot(shotIndex - 1); });
+    pmNext.addEventListener('click', function () { showShot(shotIndex + 1); });
 
     prodCards.forEach(function (card) {
       card.addEventListener('click', function () {
@@ -236,7 +291,10 @@ document.addEventListener('DOMContentLoaded', function () {
     pm.querySelector('.pm-close').addEventListener('click', function () { pm.classList.remove('open'); });
     pm.querySelector('.pm-backdrop').addEventListener('click', function () { pm.classList.remove('open'); });
     document.addEventListener('keydown', function (e) {
+      if (!pm.classList.contains('open')) return;
       if (e.key === 'Escape') pm.classList.remove('open');
+      if (e.key === 'ArrowLeft') showShot(shotIndex - 1);
+      if (e.key === 'ArrowRight') showShot(shotIndex + 1);
     });
   }
 

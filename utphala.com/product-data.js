@@ -2,6 +2,7 @@
 
 var PRODUCT_DETAILS = {
   'tomato-saaish': {
+    photos: ['images/products/photos/tomato-saaish/01.jpg', 'images/products/photos/tomato-saaish/02.jpg', 'images/products/photos/tomato-saaish/03.jpg', 'images/products/photos/tomato-saaish/04.jpg', 'images/products/photos/tomato-saaish/05.jpg'],
     category: 'Tomato', name: 'UAT - POWER F1',
     desc: 'Indeterminate tall vigorous plant. Medium foliage cover with profuse branching.',
     specTitle: 'Fruits',
@@ -16,6 +17,7 @@ var PRODUCT_DETAILS = {
     features: ['Excellent acidic type hybrid with very good taste.', 'Wide adaptability hybrid.', 'Suitable for both staking & non-staking cultivation.']
   },
   'tomato-aadhya': {
+    photos: ['images/products/photos/tomato-aadhya/01.jpg', 'images/products/photos/tomato-aadhya/02.jpg', 'images/products/photos/tomato-aadhya/03.jpg', 'images/products/photos/tomato-aadhya/04.jpg'],
     category: 'Tomato', name: 'UAT - GURUSRI F1',
     desc: 'Semi-determinate with strong, healthy plant. Vigorous plant growth with early fruit setting habit and early harvesting.',
     specTitle: 'Fruits',
@@ -108,6 +110,7 @@ var PRODUCT_DETAILS = {
     features: ['Excellent red dry colour with uniform drying, high circular wrinkle.', 'High yield potential.']
   },
   'chilli-saarang': {
+    photos: ['images/products/photos/chilli-saarang/01.jpg'],
     category: 'Chilli', name: 'UAT - SAARANG F1',
     desc: 'Strong tall erect plant with close internodal distance and heavy bearing habit.',
     specTitle: 'Fruits',
@@ -115,6 +118,7 @@ var PRODUCT_DETAILS = {
     features: ['Early and high yield potential.', 'Suitable for dual purpose, green & deep bright red (dry) with excellent bearing.']
   },
   'chilli-1212': {
+    photos: ['images/products/photos/chilli-1212/01.jpg', 'images/products/photos/chilli-1212/02.jpg', 'images/products/photos/chilli-1212/03.jpg'],
     category: 'Chilli', name: 'UAT - 1212 F1',
     desc: 'Strong tall erect plant with close internodal distance and heavy bearing habit.',
     specTitle: 'Fruits',
@@ -182,6 +186,7 @@ var PRODUCT_DETAILS = {
     features: ['Prolific fruit set & good yield.', 'High TSS and sweeter in taste with 14% sugar content.', 'Very small seed.', 'Excellent keeping quality and suitable for long distance shipping.']
   },
   'watermelon-trupti': {
+    photos: ['images/products/photos/watermelon-trupti/01.jpg', 'images/products/photos/watermelon-trupti/02.jpg', 'images/products/photos/watermelon-trupti/03.jpg'],
     category: 'Watermelon', name: 'UAT - TRUPTI F1',
     desc: 'Vigorous plant & strong vines with 3–4 fruit. Very good foliar disease tolerance.',
     specTitle: 'Fruits',
@@ -248,5 +253,11 @@ var PRODUCT_DETAILS = {
     specTitle: 'Flower',
     specs: ['Flower size 8-9 cm, yellow colour, round shape, excellent firmest flower.', 'Flower harvesting starts 50-55 days after transplanting.'],
     features: ['High yielding.', 'Good keeping quality flowers.']
+  },
+
+  'marigold-aaradhya': {
+    category: 'Marigold', name: 'UAT - AARADHYA F1',
+    photosOnly: true,
+    photos: ['images/products/photos/marigold-aaradhya/01.jpg', 'images/products/photos/marigold-aaradhya/02.jpg', 'images/products/photos/marigold-aaradhya/03.jpg', 'images/products/photos/marigold-aaradhya/04.jpg']
   }
 };
