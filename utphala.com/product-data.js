@@ -2,7 +2,7 @@
 
 var PRODUCT_DETAILS = {
   'tomato-saaish': {
-    category: 'Tomato', name: 'UAT - SAAISH F1',
+    category: 'Tomato', name: 'UAT - POWER F1',
     desc: 'Indeterminate tall vigorous plant. Medium foliage cover with profuse branching.',
     specTitle: 'Fruits',
     specs: ['Round, medium size (90–100 gm).', 'Firm and uniform fruit with excellent shelf life.', 'Fruit harvesting starts 65-75 days after transplanting.', 'Ripe fruits are red and glossy.'],
@@ -16,7 +16,7 @@ var PRODUCT_DETAILS = {
     features: ['Excellent acidic type hybrid with very good taste.', 'Wide adaptability hybrid.', 'Suitable for both staking & non-staking cultivation.']
   },
   'tomato-aadhya': {
-    category: 'Tomato', name: 'UAT - AADHYA F1',
+    category: 'Tomato', name: 'UAT - GURUSHREE F1',
     desc: 'Semi-determinate with strong, healthy plant. Vigorous plant growth with early fruit setting habit and early harvesting.',
     specTitle: 'Fruits',
     specs: ['Oval shape with uniform medium size (100–120 g).', 'Excellent fruit size uniformity with good shelf life.', 'Fruit harvesting starts 65-70 days after transplanting.', 'Ripe fruits are attractive red and glossy.'],
@@ -236,7 +236,7 @@ var PRODUCT_DETAILS = {
   },
 
   'marigold-kesari': {
-    category: 'Marigold', name: 'UAT - KESARI F1',
+    category: 'Marigold', name: 'UAT - VEERA KESARI F1',
     desc: 'Medium tall with good branches.',
     specTitle: 'Flower',
     specs: ['Flower size 8-9 cm, orange colour, round shape, excellent firmest flower.', 'Flower harvesting starts 50-55 days after transplanting.'],

@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
         + 'Phone: ' + encodeURIComponent(phone) + '%0A'
         + 'Interested in: ' + encodeURIComponent(interest) + '%0A%0A'
         + encodeURIComponent(message);
-      window.open('https://wa.me/919008897966?text=' + text, '_blank');
+      window.open('https://wa.me/918971058102?text=' + text, '_blank');
     });
   }
 });
