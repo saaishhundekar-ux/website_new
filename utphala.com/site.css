@@ -354,15 +354,32 @@ section { padding: 70px 0; }
   inset: 0;
   width: 100%;
   height: 100%;
-  transform: rotate(-90deg);
 }
-.logo-anim .la-ring circle {
+.logo-anim .la-ringc {
   fill: none;
   stroke: #02834a;
   stroke-width: 5.5;
   stroke-linecap: round;
   stroke-dasharray: 370;
   stroke-dashoffset: 370;
+}
+/* The seed that gets sown, and the soil it lands in. Both are part of
+   the story only: they fade out so the resting state is exactly the
+   logo, nothing added to it. */
+.logo-anim .la-seed { opacity: 0; }
+.logo-anim .la-seed ellipse {
+  fill: #8a5a30;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.logo-anim .la-soil {
+  fill: none;
+  stroke: #c08a52;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
 }
 .logo-anim .la-sprout {
   position: absolute;
@@ -372,29 +389,59 @@ section { padding: 70px 0; }
   height: 85.4%;
   transform-origin: 50% 100%;
   clip-path: inset(100% 0 0 0);
+  transform: scaleY(.06);
 }
 /* % margin resolves against width, so the mark-to-wordmark gap scales
    with the logo and keeps the original 373:246 proportions */
 .logo-anim .la-word { width: 100%; height: auto; margin-top: 4%; opacity: 0; }
 
-/* Play once the panel scrolls into view (.reveal adds .visible) */
-.logo-panel.visible .la-ring circle {
-  animation: la-ring-draw 1.1s ease-out .1s both;
-}
+/* Sequence, once the panel scrolls into view (.reveal adds .visible):
+   seed falls and lands (0-1.15s), soil forms (0.85s), seed sinks away
+   while the plant grows out of it (1.2-2.7s), ring closes (1.7-3.0s),
+   wordmark arrives (2.8s), then the plant sways. */
+.logo-panel.visible .la-seed  { animation: la-seed-fall 1.0s linear .15s both; }
+.logo-panel.visible .la-seed ellipse { animation: la-seed-land 1.6s ease-out .75s both; }
+.logo-panel.visible .la-soil  { animation: la-soil 1.9s ease-out .85s both; }
 .logo-panel.visible .la-sprout {
-  animation: la-grow 1.5s cubic-bezier(.22, 1, .36, 1) .45s both,
-             la-sway 5s ease-in-out 2.2s infinite;
+  animation: la-grow 1.5s cubic-bezier(.22, 1, .36, 1) 1.2s both,
+             la-sway 5s ease-in-out 3.9s infinite;
 }
-.logo-panel.visible .la-word {
-  animation: la-word-in .8s ease-out 1.35s both;
-}
+.logo-panel.visible .la-ringc { animation: la-ring-draw 1.3s ease-out 1.7s both; }
+.logo-panel.visible .la-word  { animation: la-word-in .8s ease-out 2.8s both; }
 
-@keyframes la-ring-draw { to { stroke-dashoffset: 0; } }
+/* linear timing + gravity-spaced keyframes = accelerating fall, two bounces */
+@keyframes la-seed-fall {
+  0%   { transform: translateY(-95px); opacity: 0; }
+  10%  { opacity: 1; }
+  20%  { transform: translateY(-79px); }
+  40%  { transform: translateY(-49px); }
+  60%  { transform: translateY(0); }
+  70%  { transform: translateY(-9px); }
+  80%  { transform: translateY(0); }
+  88%  { transform: translateY(-3px); }
+  100% { transform: translateY(0); opacity: 1; }
+}
+/* squash on impact, then the seed sinks out of sight as the plant takes over */
+@keyframes la-seed-land {
+  0%   { transform: scale(1, 1);      opacity: 1; }
+  8%   { transform: scale(1.25, .7); }
+  18%  { transform: scale(.95, 1.05); }
+  28%  { transform: scale(1, 1); }
+  55%  { opacity: 1; }
+  100% { transform: scale(1, 1);      opacity: 0; }
+}
+@keyframes la-soil {
+  0%   { transform: scaleX(0); opacity: 0; }
+  18%  { transform: scaleX(1); opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
 @keyframes la-grow {
-  0%   { clip-path: inset(100% 0 0 0); transform: scaleY(.7); }
-  65%  { clip-path: inset(0 0 0 0);    transform: scaleY(1.05); }
+  0%   { clip-path: inset(100% 0 0 0); transform: scaleY(.06); }
+  70%  { clip-path: inset(0 0 0 0);    transform: scaleY(1.06); }
   100% { clip-path: inset(0 0 0 0);    transform: scaleY(1); }
 }
+@keyframes la-ring-draw { to { stroke-dashoffset: 0; } }
 @keyframes la-sway {
   0%, 100% { transform: rotate(0deg); }
   50%      { transform: rotate(1.6deg); }
@@ -406,12 +453,16 @@ section { padding: 70px 0; }
 
 /* Anyone who asks for less motion just gets the finished logo */
 @media (prefers-reduced-motion: reduce) {
-  .logo-anim .la-ring circle { stroke-dashoffset: 0; }
-  .logo-anim .la-sprout { clip-path: none; }
+  .logo-anim .la-ringc { stroke-dashoffset: 0; }
+  .logo-anim .la-sprout { clip-path: none; transform: none; }
   .logo-anim .la-word { opacity: 1; }
-  .logo-panel.visible .la-ring circle,
+  .logo-anim .la-seed, .logo-anim .la-soil { display: none; }
+  .logo-panel.visible .la-ringc,
   .logo-panel.visible .la-sprout,
-  .logo-panel.visible .la-word { animation: none; }
+  .logo-panel.visible .la-word,
+  .logo-panel.visible .la-seed,
+  .logo-panel.visible .la-seed ellipse,
+  .logo-panel.visible .la-soil { animation: none; }
 }
 
 .checklist { margin: 18px 0 26px; }
