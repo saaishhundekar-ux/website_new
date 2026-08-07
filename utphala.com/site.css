@@ -317,6 +317,28 @@ section { padding: 70px 0; }
 .split .img-stack .badge .num { font-size: 1.6rem; display: block; line-height: 1.1; }
 .split .img-stack .badge .lbl { font-size: .78rem; font-weight: 600; }
 
+/* Logo shown in place of a photo: needs a panel, since the logo is a
+   transparent PNG and would otherwise carry a shadow round empty space. */
+.split .img-stack.logo-panel {
+  background: var(--white);
+  border: 1px solid var(--green-100);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  min-height: 320px;
+  /* extra bottom padding keeps the logo clear of the overlapping badge */
+  padding: 48px 40px 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.split .img-stack.logo-panel img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .checklist { margin: 18px 0 26px; }
 .checklist li {
   padding-left: 34px;
@@ -876,6 +898,8 @@ section { padding: 70px 0; }
   .features .grid, .split, .contact-wrap { grid-template-columns: 1fr; }
   .features { margin-top: -40px; }
   .split { gap: 30px; }
+  .split .img-stack.logo-panel { min-height: 220px; padding: 30px 24px 78px; }
+  .split .img-stack.logo-panel img { max-width: 220px; }
   .stats .grid { grid-template-columns: repeat(2, 1fr); }
   .office-grid { grid-template-columns: 1fr; }
   .hero { min-height: 500px; }
