@@ -1073,7 +1073,19 @@ section { padding: 70px 0; }
 }
 @media (min-width: 561px) {
   .product-modal .pm-panel { display: flex; flex-direction: row; max-height: 80vh; }
-  .product-modal .pm-image { width: 42%; height: auto; flex: 0 0 42%; }
+  /* photo column: image over its thumbnails, so the row stays 2 columns */
+  .product-modal .pm-media {
+    flex: 0 0 44%;
+    display: flex;
+    flex-direction: column;
+    background: var(--green-50);
+  }
+  /* a fixed portrait-ish frame instead of stretching to the panel height,
+     and contain rather than cover: these field photos run from 0.45 to
+     1.78 in aspect, so cropping to fill would butcher half of them */
+  .product-modal .pm-image { height: auto; aspect-ratio: 3 / 4; }
+  .product-modal .pm-image img { object-fit: contain; }
+  .product-modal .pm-thumbs { justify-content: center; padding: 10px 12px 14px; background: none; }
   .product-modal .pm-body { flex: 1; overflow-y: auto; }
 }
 

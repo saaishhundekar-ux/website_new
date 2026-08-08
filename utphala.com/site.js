@@ -188,6 +188,9 @@ document.addEventListener('DOMContentLoaded', function () {
     pm.innerHTML = '<div class="pm-backdrop"></div>'
       + '<div class="pm-panel">'
       + '<button class="pm-close" aria-label="Close">✕</button>'
+      /* image + thumbs live in one wrapper so the desktop two-column
+         layout stays two columns */
+      + '<div class="pm-media">'
       + '<div class="pm-image">'
       + '<img src="" alt="">'
       + '<button class="pm-nav pm-prev" aria-label="Previous photo">‹</button>'
@@ -195,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
       + '<span class="pm-count"></span>'
       + '</div>'
       + '<div class="pm-thumbs"></div>'
+      + '</div>'
       + '<div class="pm-body">'
       + '<span class="pm-category"></span>'
       + '<h3 class="pm-name"></h3>'
