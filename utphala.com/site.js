@@ -10,24 +10,23 @@ document.addEventListener('DOMContentLoaded', function () {
       nav.classList.toggle('open');
       toggle.classList.toggle('open');
     });
-    var dropdownParent = document.querySelector('.nav .has-dropdown');
-    var dropdownLink = dropdownParent && dropdownParent.querySelector(':scope > a');
+    /* Every nav link navigates and closes the panel — including Products,
+       which used to swallow the tap to open its sub-list. Opening the
+       sub-list is now the arrow button's job alone. */
     nav.querySelectorAll('a').forEach(function (a) {
-      if (a === dropdownLink) return;
       a.addEventListener('click', function () {
         nav.classList.remove('open');
         toggle.classList.remove('open');
       });
     });
-    if (dropdownLink) {
-      dropdownLink.addEventListener('click', function (e) {
-        if (window.innerWidth <= 820) {
-          e.preventDefault();
-          dropdownParent.classList.toggle('open');
-        } else {
-          nav.classList.remove('open');
-          toggle.classList.remove('open');
-        }
+    var dropdownParent = document.querySelector('.nav .has-dropdown');
+    var ddToggle = dropdownParent && dropdownParent.querySelector('.dd-toggle');
+    if (ddToggle) {
+      ddToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var isOpen = dropdownParent.classList.toggle('open');
+        ddToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
     }
   }
