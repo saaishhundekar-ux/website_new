@@ -255,6 +255,11 @@ var PRODUCT_DETAILS = {
     features: ['High yielding.', 'Good keeping quality flowers.']
   },
 
+  'chilli-1091': {
+    category: 'Chilli', name: 'UAT - 1091 F1',
+    photosOnly: true,
+    photos: ['images/products/photos/chilli-1091/01.jpg', 'images/products/photos/chilli-1091/02.jpg', 'images/products/photos/chilli-1091/03.jpg', 'images/products/photos/chilli-1091/04.jpg', 'images/products/photos/chilli-1091/05.jpg']
+  },
   'marigold-aaradhya': {
     category: 'Marigold', name: 'UAT - AARADHYA F1',
     photosOnly: true,

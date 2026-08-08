@@ -171,10 +171,38 @@ document.addEventListener('DOMContentLoaded', function () {
     var lbImg = lb.querySelector('img');
     var lbIndex = 0;
 
+    /* Real full screen, so the photo uses the whole display rather than
+       just the page. iOS Safari refuses requestFullscreen on non-video
+       elements, so the fixed overlay stays as the fallback there and
+       still covers the viewport. Gallery only: this lightbox is created
+       inside the gallery block, the product popup is separate. */
+    function fullscreenOn() {
+      var req = lb.requestFullscreen || lb.webkitRequestFullscreen || lb.msRequestFullscreen;
+      if (!req) return;
+      try {
+        var p = req.call(lb);
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) { /* fall back to the overlay */ }
+    }
+    function fullscreenOff() {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) return;
+      var ex = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+      if (!ex) return;
+      try {
+        var p = ex.call(document);
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) { /* nothing useful to do */ }
+    }
+
     function openLightbox(i) {
       lbIndex = i;
       lbImg.src = window.__galleryUrls[i];
       lb.classList.add('open');
+      fullscreenOn();
+    }
+    function closeLightbox() {
+      lb.classList.remove('open');
+      fullscreenOff();
     }
     function step(dir) {
       var urls = window.__galleryUrls || [];
@@ -182,15 +210,22 @@ document.addEventListener('DOMContentLoaded', function () {
       lbIndex = (lbIndex + dir + urls.length) % urls.length;
       lbImg.src = urls[lbIndex];
     }
-    lb.querySelector('.lb-close').addEventListener('click', function () { lb.classList.remove('open'); });
+    lb.querySelector('.lb-close').addEventListener('click', closeLightbox);
     lb.querySelector('.lb-prev').addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
     lb.querySelector('.lb-next').addEventListener('click', function (e) { e.stopPropagation(); step(1); });
-    lb.addEventListener('click', function (e) { if (e.target === lb) lb.classList.remove('open'); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) closeLightbox(); });
     document.addEventListener('keydown', function (e) {
       if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape') lb.classList.remove('open');
+      if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') step(-1);
       if (e.key === 'ArrowRight') step(1);
+    });
+    /* leaving full screen by Esc or a system gesture should close the overlay too */
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (ev) {
+      document.addEventListener(ev, function () {
+        var fs = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!fs && lb.classList.contains('open')) lb.classList.remove('open');
+      });
     });
   }
 
