@@ -100,6 +100,105 @@ document.addEventListener('DOMContentLoaded', function () {
     reveals.forEach(function (el) { revealObserver.observe(el); });
   }
 
+  /* ---------- Full-screen photo viewer (shared) ----------
+     Used by the gallery grid and, on phones, by the product popup.
+     requestFullscreen is attempted because it genuinely works on Android
+     and desktop, but every browser on iOS is WebKit underneath and WebKit
+     refuses it for anything but <video> — so the fixed overlay is the real
+     mechanism there, and on phones it is styled edge-to-edge to match. */
+  var viewer = (function () {
+    var el = document.createElement('div');
+    el.className = 'lightbox';
+    el.innerHTML = '<button class="lb-close" aria-label="Close">✕</button>'
+      + '<button class="lb-prev" aria-label="Previous photo">‹</button>'
+      + '<img src="" alt="Photo enlarged">'
+      + '<button class="lb-next" aria-label="Next photo">›</button>';
+    document.body.appendChild(el);
+
+    var img = el.querySelector('img');
+    var prev = el.querySelector('.lb-prev');
+    var next = el.querySelector('.lb-next');
+    var list = [];
+    var idx = 0;
+
+    function fsOn() {
+      var req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      if (!req) return;
+      try {
+        var p = req.call(el);
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) { /* overlay carries it */ }
+    }
+    function fsOff() {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) return;
+      var ex = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+      if (!ex) return;
+      try {
+        var p = ex.call(document);
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) { /* nothing useful to do */ }
+    }
+
+    function show(i) {
+      if (!list.length) return;
+      idx = (i + list.length) % list.length;
+      img.src = list[idx];
+      var many = list.length > 1;
+      prev.style.display = many ? '' : 'none';
+      next.style.display = many ? '' : 'none';
+    }
+    function step(d) { show(idx + d); }
+    function open(urls, i) {
+      if (!urls || !urls.length) return;
+      list = urls.slice();
+      show(i || 0);
+      el.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      fsOn();
+    }
+    function close() {
+      el.classList.remove('open');
+      document.body.style.overflow = '';
+      fsOff();
+    }
+    function isOpen() { return el.classList.contains('open'); }
+
+    el.querySelector('.lb-close').addEventListener('click', close);
+    prev.addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
+    next.addEventListener('click', function (e) { e.stopPropagation(); step(1); });
+    el.addEventListener('click', function (e) { if (e.target === el) close(); });
+
+    /* swipe, since there is no hover target on a phone */
+    var sx = 0, sy = 0;
+    el.addEventListener('touchstart', function (e) {
+      sx = e.changedTouches[0].clientX; sy = e.changedTouches[0].clientY;
+    }, { passive: true });
+    el.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - sx;
+      var dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    document.addEventListener('keydown', function (e) {
+      if (!isOpen()) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+    /* leaving full screen by Esc or a system gesture closes the overlay too,
+       so it can never be left half-open */
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (ev) {
+      document.addEventListener(ev, function () {
+        var fs = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!fs && isOpen()) { el.classList.remove('open'); document.body.style.overflow = ''; }
+      });
+    });
+
+    return { open: open, close: close, isOpen: isOpen };
+  })();
+
+  var isPhone = function () { return window.matchMedia('(max-width: 620px)').matches; };
+
   /* ---------- Auto-loading gallery ---------- */
   var galleryGrid = document.getElementById('gallery-grid');
   if (galleryGrid) {
@@ -160,73 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .catch(function () { render(fallback.concat(extraPhotos)); });
 
-    /* Lightbox */
-    var lb = document.createElement('div');
-    lb.className = 'lightbox';
-    lb.innerHTML = '<button class="lb-close" aria-label="Close">✕</button>'
-      + '<button class="lb-prev" aria-label="Previous">‹</button>'
-      + '<img src="" alt="Gallery photo enlarged">'
-      + '<button class="lb-next" aria-label="Next">›</button>';
-    document.body.appendChild(lb);
-    var lbImg = lb.querySelector('img');
-    var lbIndex = 0;
-
-    /* Real full screen, so the photo uses the whole display rather than
-       just the page. iOS Safari refuses requestFullscreen on non-video
-       elements, so the fixed overlay stays as the fallback there and
-       still covers the viewport. Gallery only: this lightbox is created
-       inside the gallery block, the product popup is separate. */
-    function fullscreenOn() {
-      var req = lb.requestFullscreen || lb.webkitRequestFullscreen || lb.msRequestFullscreen;
-      if (!req) return;
-      try {
-        var p = req.call(lb);
-        if (p && p.catch) p.catch(function () {});
-      } catch (e) { /* fall back to the overlay */ }
-    }
-    function fullscreenOff() {
-      if (!document.fullscreenElement && !document.webkitFullscreenElement) return;
-      var ex = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
-      if (!ex) return;
-      try {
-        var p = ex.call(document);
-        if (p && p.catch) p.catch(function () {});
-      } catch (e) { /* nothing useful to do */ }
-    }
-
-    function openLightbox(i) {
-      lbIndex = i;
-      lbImg.src = window.__galleryUrls[i];
-      lb.classList.add('open');
-      fullscreenOn();
-    }
-    function closeLightbox() {
-      lb.classList.remove('open');
-      fullscreenOff();
-    }
-    function step(dir) {
-      var urls = window.__galleryUrls || [];
-      if (!urls.length) return;
-      lbIndex = (lbIndex + dir + urls.length) % urls.length;
-      lbImg.src = urls[lbIndex];
-    }
-    lb.querySelector('.lb-close').addEventListener('click', closeLightbox);
-    lb.querySelector('.lb-prev').addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
-    lb.querySelector('.lb-next').addEventListener('click', function (e) { e.stopPropagation(); step(1); });
-    lb.addEventListener('click', function (e) { if (e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', function (e) {
-      if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') step(-1);
-      if (e.key === 'ArrowRight') step(1);
-    });
-    /* leaving full screen by Esc or a system gesture should close the overlay too */
-    ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (ev) {
-      document.addEventListener(ev, function () {
-        var fs = document.fullscreenElement || document.webkitFullscreenElement;
-        if (!fs && lb.classList.contains('open')) lb.classList.remove('open');
-      });
-    });
+    function openLightbox(i) { viewer.open(window.__galleryUrls || [], i); }
   }
 
   /* ---------- Product detail modal ---------- */
@@ -331,6 +364,13 @@ document.addEventListener('DOMContentLoaded', function () {
     pmPrev.addEventListener('click', function () { showShot(shotIndex - 1); });
     pmNext.addEventListener('click', function () { showShot(shotIndex + 1); });
 
+    /* Phone only: tapping the photo opens it full screen, cycling this
+       product's own shots. On laptop the popup is left exactly as it is. */
+    pmImg.addEventListener('click', function () {
+      if (!isPhone() || !shots.length) return;
+      viewer.open(shots, shotIndex);
+    });
+
     prodCards.forEach(function (card) {
       card.addEventListener('click', function () {
         var img = card.querySelector('img');
@@ -345,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
     pm.querySelector('.pm-backdrop').addEventListener('click', function () { pm.classList.remove('open'); });
     document.addEventListener('keydown', function (e) {
       if (!pm.classList.contains('open')) return;
+      if (viewer.isOpen()) return;   /* the viewer sits on top and owns the keys */
       if (e.key === 'Escape') pm.classList.remove('open');
       if (e.key === 'ArrowLeft') showShot(shotIndex - 1);
       if (e.key === 'ArrowRight') showShot(shotIndex + 1);
