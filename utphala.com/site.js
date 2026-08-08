@@ -115,10 +115,24 @@ document.addEventListener('DOMContentLoaded', function () {
       'field-photo-4.jpeg', 'field-photo-5.jpeg', 'field-photo-6.jpeg',
       'field-photo-7.jpeg', 'field-photo-8.jpeg', 'field-photo-9.jpeg',
       'field-photo-10.jpeg', 'field-photo-11.jpeg', 'field-photo-12.jpeg',
-      'field-photo-13.jpeg'
+      'field-photo-13.jpeg', 'field-photo-14.jpeg'
     ].map(function (f) { return 'images/gallery/' + f; });
 
     var isImg = /\.(jpe?g|png|webp|gif)$/i;
+
+    /* Crop photos live under images/products/photos/<key>/ so the product
+       popups can use them. The gallery shows everything, so pull them in
+       from product-data.js rather than keeping a second copy of each file.
+       Any photo added to a product in future shows up here automatically. */
+    function productPhotos() {
+      var out = [];
+      if (typeof PRODUCT_DETAILS === 'undefined') return out;
+      Object.keys(PRODUCT_DETAILS).forEach(function (k) {
+        (PRODUCT_DETAILS[k].photos || []).forEach(function (u) { out.push(u); });
+      });
+      return out;
+    }
+    var extraPhotos = productPhotos();
 
     function render(urls) {
       galleryGrid.innerHTML = '';
@@ -142,9 +156,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var urls = files
           .filter(function (f) { return f.type === 'file' && isImg.test(f.name); })
           .map(function (f) { return f.download_url; });
-        render(urls.length ? urls : fallback);
+        render((urls.length ? urls : fallback).concat(extraPhotos));
       })
-      .catch(function () { render(fallback); });
+      .catch(function () { render(fallback.concat(extraPhotos)); });
 
     /* Lightbox */
     var lb = document.createElement('div');
