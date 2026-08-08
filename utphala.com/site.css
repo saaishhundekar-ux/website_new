@@ -593,19 +593,15 @@ section { padding: 70px 0; }
   gap: 22px;
   margin: 34px 0 32px;
 }
+/* the pouch shape and its shadow are baked into the image (on white, to
+   match this section), so no card treatment here — that would draw a
+   second box behind the packet */
 .pouch {
   display: block;
-  background: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: transform .25s, box-shadow .25s;
+  transition: transform .28s;
 }
 .pouch img { width: 100%; height: auto; }
-.pouch:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 14px 34px rgba(20, 83, 45, .18);
-}
+.pouch:hover { transform: translateY(-8px) scale(1.015); }
 .pouch.reveal { transition-delay: calc(var(--i) * 90ms); }
 
 /* ---------- Stats band ---------- */
