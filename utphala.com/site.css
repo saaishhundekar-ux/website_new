@@ -584,24 +584,29 @@ section { padding: 70px 0; }
 .bg-soft { background: linear-gradient(180deg, var(--green-50) 0%, var(--white) 100%); }
 .bg-yellow-soft { background: linear-gradient(180deg, #fffdf2 0%, var(--yellow-100) 100%); }
 
-/* ---------- Explore products (home) ----------
-   Replaces the old 12-tile category grid: the browsing itself lives on
-   the products page, the home page just points at it. */
-.explore {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-  background: linear-gradient(120deg, var(--green-50) 0%, var(--yellow-50) 100%);
-  border: 1px solid var(--green-100);
-  border-left: 5px solid var(--yellow-500);
-  border-radius: var(--radius);
-  padding: 34px 38px;
+/* ---------- Packaging row (home) ----------
+   Real pouch fronts from the print artwork. Each links to that hybrid on
+   the products page; browsing itself still lives there. */
+.pouch-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin: 34px 0 32px;
 }
-.explore .ex-text { max-width: 640px; }
-.explore .section-title { margin-bottom: 8px; }
-.explore p { color: var(--muted); }
-.explore .btn { flex: none; }
+.pouch {
+  display: block;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .25s, box-shadow .25s;
+}
+.pouch img { width: 100%; height: auto; }
+.pouch:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 34px rgba(20, 83, 45, .18);
+}
+.pouch.reveal { transition-delay: calc(var(--i) * 90ms); }
 
 /* ---------- Stats band ---------- */
 .stats {
@@ -1183,6 +1188,8 @@ section { padding: 70px 0; }
 }
 
 @media (max-width: 620px) {
+  /* four pouches side by side would be postage stamps on a phone */
+  .pouch-row { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .pillars { margin-top: -46px; }
   .pillar-track { padding: 30px 18px 26px; gap: 22px 12px; }
   .pillar { flex: 0 0 calc(50% - 6px); }
@@ -1238,7 +1245,7 @@ section { padding: 70px 0; }
   .nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
   .features .grid, .split, .contact-wrap { grid-template-columns: 1fr; }
-  .explore { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+  .pouch-row { gap: 16px; margin: 26px 0 26px; }
   .features { margin-top: -40px; }
   .split { gap: 30px; }
   .split .img-stack.logo-panel { min-height: 220px; padding: 30px 24px 78px; }

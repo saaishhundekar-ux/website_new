@@ -370,15 +370,31 @@ document.addEventListener('DOMContentLoaded', function () {
       viewer.open(shots, shotIndex);
     });
 
+    function cardKey(card) {
+      var img = card.querySelector('img');
+      if (!img) return null;
+      return img.getAttribute('src').split('/').pop().replace(/\.(jpe?g|png)$/i, '');
+    }
+
     prodCards.forEach(function (card) {
       card.addEventListener('click', function () {
-        var img = card.querySelector('img');
-        if (!img) return;
-        var src = img.getAttribute('src');
-        var key = src.split('/').pop().replace(/\.(jpe?g|png)$/i, '');
-        openProductModal(key, src);
+        var key = cardKey(card);
+        if (key) openProductModal(key, card.querySelector('img').getAttribute('src'));
       });
     });
+
+    /* products.html?product=<key> opens that hybrid straight away, so the
+       pouches on the home page can land on the right product */
+    var wanted = new URLSearchParams(window.location.search).get('product');
+    if (wanted) {
+      for (var i = 0; i < prodCards.length; i++) {
+        if (cardKey(prodCards[i]) === wanted) {
+          prodCards[i].scrollIntoView({ block: 'center' });
+          prodCards[i].click();
+          break;
+        }
+      }
+    }
 
     pm.querySelector('.pm-close').addEventListener('click', function () { pm.classList.remove('open'); });
     pm.querySelector('.pm-backdrop').addEventListener('click', function () { pm.classList.remove('open'); });
