@@ -585,23 +585,26 @@ section { padding: 70px 0; }
 .bg-yellow-soft { background: linear-gradient(180deg, #fffdf2 0%, var(--yellow-100) 100%); }
 
 /* ---------- Packaging row (home) ----------
-   Real pouch fronts from the print artwork. Each links to that hybrid on
-   the products page; browsing itself still lives there. */
+   The client's studio mockups, shot on black. The section takes the same
+   near-black so the tiles melt into it, and the tiles sit flush so the
+   studio floor reads as one continuous surface across the row. */
+.pouch-section { background: #0a0a0a; }
+.pouch-section .section-title { color: #fff; }
 .pouch-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
+  gap: 0;
   margin: 34px 0 32px;
 }
-/* the pouch shape and its shadow are baked into the image (on white, to
-   match this section), so no card treatment here — that would draw a
-   second box behind the packet */
+/* No card treatment: the pouch, its shadow and the floor are all part of
+   the photograph. Hover brightens rather than lifts, since lifting one
+   tile would break the shared floor line. */
 .pouch {
   display: block;
-  transition: transform .28s;
+  transition: filter .28s;
 }
-.pouch img { width: 100%; height: auto; }
-.pouch:hover { transform: translateY(-8px) scale(1.015); }
+.pouch img { width: 100%; height: auto; display: block; }
+.pouch:hover { filter: brightness(1.12); }
 .pouch.reveal { transition-delay: calc(var(--i) * 90ms); }
 
 /* ---------- Stats band ---------- */
@@ -958,6 +961,47 @@ section { padding: 70px 0; }
     border-radius: 0;
     box-shadow: none;
   }
+}
+/* Controls stay out of the photo's way: no fill, just a soft white glyph.
+   The shadow is what keeps them legible over a pale photo, since there is
+   no longer a disc behind them. */
+.lightbox .lb-close,
+.lightbox .lb-prev,
+.lightbox .lb-next {
+  position: absolute;
+  background: transparent;
+  color: #fff;
+  opacity: .5;
+  border: none;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .75));
+  transition: opacity .2s, background .2s, transform .2s;
+}
+.lightbox .lb-close:hover,
+.lightbox .lb-prev:hover,
+.lightbox .lb-next:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, .16);
+  transform: scale(1.08);
+}
+.lightbox .lb-close { top: 22px; right: 22px; }
+.lightbox .lb-prev { left: 22px; top: 50%; transform: translateY(-50%); }
+.lightbox .lb-next { right: 22px; top: 50%; transform: translateY(-50%); }
+.lightbox .lb-prev:hover, .lightbox .lb-next:hover { transform: translateY(-50%) scale(1.08); }
+
+/* Phone positions must come after the base ones above: same specificity,
+   so source order decides — placed earlier they were simply overridden and
+   the notch insets never applied. */
+@media (max-width: 620px) {
   .lightbox .lb-close {
     top: calc(12px + env(safe-area-inset-top, 0px));
     right: calc(12px + env(safe-area-inset-right, 0px));
@@ -965,31 +1009,6 @@ section { padding: 70px 0; }
   .lightbox .lb-prev { left: calc(10px + env(safe-area-inset-left, 0px)); }
   .lightbox .lb-next { right: calc(10px + env(safe-area-inset-right, 0px)); }
 }
-.lightbox .lb-close,
-.lightbox .lb-prev,
-.lightbox .lb-next {
-  position: absolute;
-  background: var(--yellow-500);
-  color: var(--green-950);
-  border: none;
-  border-radius: 50%;
-  width: 46px;
-  height: 46px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform .2s;
-}
-.lightbox .lb-close:hover,
-.lightbox .lb-prev:hover,
-.lightbox .lb-next:hover { transform: scale(1.1); }
-.lightbox .lb-close { top: 22px; right: 22px; }
-.lightbox .lb-prev { left: 22px; top: 50%; transform: translateY(-50%); }
-.lightbox .lb-next { right: 22px; top: 50%; transform: translateY(-50%); }
-.lightbox .lb-prev:hover, .lightbox .lb-next:hover { transform: translateY(-50%) scale(1.1); }
 
 @media (max-width: 560px) {
   .gallery-grid { columns: 2 150px; column-gap: 12px; }
@@ -1185,7 +1204,7 @@ section { padding: 70px 0; }
 
 @media (max-width: 620px) {
   /* four pouches side by side would be postage stamps on a phone */
-  .pouch-row { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .pouch-row { grid-template-columns: repeat(2, 1fr); }
   .pillars { margin-top: -46px; }
   .pillar-track { padding: 30px 18px 26px; gap: 22px 12px; }
   .pillar { flex: 0 0 calc(50% - 6px); }
@@ -1241,7 +1260,7 @@ section { padding: 70px 0; }
   .nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
   .features .grid, .split, .contact-wrap { grid-template-columns: 1fr; }
-  .pouch-row { gap: 16px; margin: 26px 0 26px; }
+  .pouch-row { margin: 26px 0 26px; }
   .features { margin-top: -40px; }
   .split { gap: 30px; }
   .split .img-stack.logo-panel { min-height: 220px; padding: 30px 24px 78px; }
