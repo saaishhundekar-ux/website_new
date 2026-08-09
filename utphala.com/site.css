@@ -13,7 +13,6 @@
   --yellow-500: #f2c112;
   --yellow-400: #f7cf3a;
   --yellow-100: #fdf4d0;
-  --yellow-50:  #fefae8;
   --ink:       #1d2a20;
   --muted:     #5a6b5e;
   --white:     #ffffff;
@@ -228,18 +227,6 @@ section { padding: 70px 0; }
   margin: 0 auto;
   padding: 120px 20px;
   color: #fff;
-}
-.hero .hero-tag {
-  display: inline-block;
-  background: var(--yellow-500);
-  color: var(--green-950);
-  font-weight: 600;
-  font-size: .8rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: 6px 18px;
-  border-radius: 999px;
-  margin-bottom: 20px;
 }
 .hero h1 {
   font-size: clamp(1.9rem, 4.5vw, 3.2rem);
@@ -646,6 +633,7 @@ section { padding: 70px 0; }
   margin-top: 40px;
 }
 .prod-card {
+  cursor: pointer;
   background: var(--white);
   border-radius: var(--radius);
   overflow: hidden;
@@ -1019,7 +1007,6 @@ section { padding: 70px 0; }
 }
 
 /* ---------- Product detail modal ---------- */
-.prod-card { cursor: pointer; }
 .product-modal {
   position: fixed;
   inset: 0;
