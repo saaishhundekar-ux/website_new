@@ -412,6 +412,9 @@ section { padding: 70px 0; }
   position: absolute;
   bottom: -20px;
   right: -10px;
+  /* the label is a full phrase now, so cap the width and let it wrap
+     rather than stretching into a bar across the panel */
+  max-width: 200px;
   background: var(--yellow-500);
   color: var(--green-950);
   border-radius: 12px;
@@ -432,7 +435,7 @@ section { padding: 70px 0; }
   box-shadow: var(--shadow);
   min-height: 320px;
   /* extra bottom padding keeps the logo clear of the overlapping badge */
-  padding: 48px 40px 76px;
+  padding: 48px 40px 104px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1263,7 +1266,7 @@ section { padding: 70px 0; }
   .pouch-row { margin: 26px 0 26px; }
   .features { margin-top: -40px; }
   .split { gap: 30px; }
-  .split .img-stack.logo-panel { min-height: 220px; padding: 30px 24px 78px; }
+  .split .img-stack.logo-panel { min-height: 220px; padding: 30px 24px 104px; }
   .split .img-stack.logo-panel .logo-anim { max-width: 220px; }
   .stats .grid { grid-template-columns: repeat(2, 1fr); }
   .office-grid { grid-template-columns: 1fr; }
