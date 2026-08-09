@@ -211,9 +211,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var fallback = [
       'field-photo-1.jpeg', 'field-photo-2.jpeg', 'field-photo-3.jpeg',
       'field-photo-4.jpeg', 'field-photo-5.jpeg', 'field-photo-6.jpeg',
-      'field-photo-7.jpeg', 'field-photo-8.jpeg', 'field-photo-9.jpeg',
-      'field-photo-10.jpeg', 'field-photo-11.jpeg', 'field-photo-12.jpeg',
-      'field-photo-13.jpeg', 'field-photo-14.jpeg'
+      'field-photo-7.jpeg', 'field-photo-9.jpeg', 'field-photo-10.jpeg',
+      'field-photo-11.jpeg', 'field-photo-12.jpeg', 'field-photo-14.jpeg'
     ].map(function (f) { return 'images/gallery/' + f; });
 
     var isImg = /\.(jpe?g|png|webp|gif)$/i;
