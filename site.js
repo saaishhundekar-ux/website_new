@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Any image uploaded to this folder in the GitHub repo appears here automatically.
     var GH_OWNER = 'saaishhundekar-ux';
     var GH_REPO = 'website_new';
-    var GH_PATH = 'utphala.com/images/gallery';
+    var GH_PATH = 'images/gallery';
     var GH_BRANCH = 'main';
 
     // Starter photos shown if the GitHub API is unreachable (e.g. local preview or rate limit)
