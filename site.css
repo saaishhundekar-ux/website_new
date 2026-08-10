@@ -1295,3 +1295,6 @@ section { padding: 70px 0; }
   .prod-card h3 { font-size: .8rem; line-height: 1.3; }
   .prod-card .tag { font-size: .68rem; padding: 2px 8px; margin: 6px 0 0; }
 }
+
+/* ---------- 404 ---------- */
+.nf-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
